@@ -1,0 +1,73 @@
+Sql
+--=======================================================================
+--SQL Foundations -Weeek 1
+--Topic: Subqueries
+--Author: Akshatha K A
+--Date: June 2026
+--=======================================================================
+
+--Day 3: Subqueries
+--Subquery is simple a query inside another query
+
+--Types of Subqueries
+--1.Single Row Subquery
+--Returns only one value
+
+SELECT *
+FROM employees 
+WHERE Salary>
+(
+SELECT AVG(Salary)
+FROM employees
+);
+
+
+--2.Multiple Row Subquery
+--Returns multiple values
+
+SELECT * 
+FROM employees 
+WHERE Department IN
+(
+SELECT Department
+FROM employees 
+WHERE Salary >60000
+);
+
+--3.Correlated Subquery
+--Most important query, The inner query depends on the outer query
+
+SELECT *
+FROM employees e
+WHERE Salary >
+(
+SELECT AVG(Salary)
+FROM employees
+WHERE Department =e.Department
+);
+
+--Exits Subquery
+--used to check whether data exists
+SELECT *
+FROM Employees e
+WHERE EXISTS
+(
+    SELECT 1
+    FROM Employees
+    WHERE Department='IT'
+);
+-- NOT IN Subquery
+-- Returns employees not in any department
+SELECT *
+FROM Employees
+WHERE DepartmentID NOT IN
+(
+    SELECT DepartmentID 
+    FROM Departments
+);
+
+-- Subquery in SELECT clause
+-- Shows each employee with company average salary
+SELECT EmployeeName, Salary,
+(SELECT AVG(Salary) FROM Employees) AS CompanyAverage
+FROM Employees;
